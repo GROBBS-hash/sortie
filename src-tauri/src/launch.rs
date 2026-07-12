@@ -93,7 +93,7 @@ pub fn launch_loadout(app: AppHandle, loadout_id: String) -> Result<(), String> 
             let _ = app
                 .notification()
                 .builder()
-                .title(format!("LoadOut — {label}"))
+                .title(format!("Sortie — {label}"))
                 .body(msg)
                 .show();
         }

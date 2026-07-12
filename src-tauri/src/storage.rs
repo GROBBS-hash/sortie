@@ -8,7 +8,7 @@ fn config_dir(app: &AppHandle) -> Result<PathBuf, String> {
         .path()
         .config_dir()
         .map_err(|e| format!("could not resolve config dir: {e}"))?;
-    Ok(base.join("LoadOut"))
+    Ok(base.join("Sortie"))
 }
 
 fn config_path(app: &AppHandle) -> Result<PathBuf, String> {

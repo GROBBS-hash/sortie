@@ -58,7 +58,7 @@ export default function FirstRun({ data, onChange, onEdit, onSkip }: FirstRunPro
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-200 p-8 flex flex-col items-center justify-center text-center">
       <h1 className="text-3xl font-semibold mb-2">
-        Welcome to Load<span className="text-violet-400">Out</span>
+        Welcome to <span className="text-violet-400">Sortie</span>
       </h1>
       <p className="text-neutral-500 mb-8 max-w-md">
         Let's build your first loadout. Pick anything you found below, or start from scratch.

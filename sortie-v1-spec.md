@@ -1,6 +1,6 @@
-# LoadOut — v1 Build Spec
+# Sortie — v1 Build Spec
 
-**Working title:** LoadOut (placeholder — check name availability before launch)
+**Name:** Sortie (renamed from the "LoadOut" placeholder after a name-availability check found the latter already in use by multiple products and a defunct Steam game)
 **One-liner:** One click launches your entire game session — game, Discord, trackers, wiki tabs. One click closes it all.
 **Platform:** Windows 10/11 only
 **Target v1 timeline:** 1–2 weekends of AI-assisted development
@@ -32,7 +32,7 @@
 | Shell | **Tauri 2** | ~5–10 MB installer vs Electron's 80–150 MB. Gamers notice installer size and RAM footprint. Native system tray support. |
 | Backend | **Rust** (Tauri commands) | Comes with Tauri. Process spawning, filesystem scanning, JSON persistence. You will write very little Rust by hand — AI handles nearly all of it. |
 | Frontend | **React + Vite + Tailwind** | Fastest path with AI-assisted coding; huge training-data coverage means fewer AI mistakes. |
-| Storage | Single `loadouts.json` in `%APPDATA%/LoadOut/` | No database. Human-readable, trivially backed up, easy to debug. |
+| Storage | Single `loadouts.json` in `%APPDATA%/Sortie/` | No database. Human-readable, trivially backed up, easy to debug. |
 | Installer | Tauri's bundled NSIS `.exe` + a portable `.zip` build | Gamers like portable versions; itch.io prefers them. |
 
 **Honest trade-off:** Tauri's learning curve is slightly steeper than Electron's if you hit an edge case. If you stall hard in weekend one, falling back to Electron is acceptable — shipping beats purity.

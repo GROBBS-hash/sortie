@@ -126,9 +126,7 @@ export default function Home({ data, onChange, onEdit, onToast }: HomeProps) {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-200 p-8">
-      <h1 className="text-2xl font-semibold mb-6">
-        Load<span className="text-violet-400">Out</span>
-      </h1>
+      <h1 className="text-2xl font-semibold mb-6 text-violet-400">Sortie</h1>
 
       {data.loadouts.length === 0 && (
         <p className="text-neutral-500 mb-4">No loadouts yet — create one to get started.</p>

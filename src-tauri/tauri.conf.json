@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "loadout",
+  "productName": "sortie",
   "version": "0.1.0",
-  "identifier": "com.loadout.app",
+  "identifier": "com.sortie.desktop",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:1420",
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "LoadOut",
+        "title": "Sortie",
         "width": 800,
         "height": 600,
         "resizable": true,
