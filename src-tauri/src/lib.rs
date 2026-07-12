@@ -1,4 +1,6 @@
+mod detect;
 mod launch;
+mod steam;
 mod storage;
 mod types;
 
@@ -9,10 +11,13 @@ use tauri::Manager;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   tauri::Builder::default()
+    .plugin(tauri_plugin_dialog::init())
     .invoke_handler(tauri::generate_handler![
       storage::get_loadouts,
       storage::save_loadouts,
-      launch::launch_loadout
+      launch::launch_loadout,
+      detect::detect_installed_apps,
+      steam::list_steam_games
     ])
     .setup(|app| {
       if cfg!(debug_assertions) {

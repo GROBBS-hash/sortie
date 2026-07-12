@@ -33,3 +33,15 @@ export interface LaunchProgress {
   status: 'launching' | 'ok' | 'missing' | 'error'
   message: string | null
 }
+
+export interface DetectedApp {
+  key: string
+  label: string
+  path: string
+  args: string
+}
+
+export interface SteamGame {
+  appId: string
+  name: string
+}
