@@ -1,32 +1,53 @@
-# React + TypeScript + Vite
+# Sortie
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+One click launches your entire gaming session — apps, Steam games, and websites, in order. Lives in your system tray.
 
-Currently, two official plugins are available:
+Windows only. Free.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Screenshots
 
-## React Compiler
+**Home** — your loadouts, launch with one click
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+![Home screen](screenshots/home.png)
 
-## Expanding the Oxlint configuration
+**Editor** — build a loadout from any mix of apps, Steam games, and websites
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+![Editor screen](screenshots/editor.png)
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+**Add item** — detects installed apps automatically, plus your Steam library
+
+![Add item picker](screenshots/add-item-picker.png)
+
+**Tray menu** — launch any loadout without opening the window
+
+![Tray menu](screenshots/tray-menu.png)
+
+## Download
+
+Latest release: [github.com/GROBBS-hash/sortie/releases](https://github.com/GROBBS-hash/sortie/releases)
+
+Two options — a Windows installer (per-user, no admin needed) or a portable zip, no install at all.
+
+The build is unsigned, so Windows SmartScreen will warn on first run ("Windows protected your PC"). Click "More info" → "Run anyway." Source is public if you want to check what it does first.
+
+## What it does
+
+- Group any mix of apps (`.exe`), Steam games, and websites into a "loadout"
+- Launch a whole loadout in one click — from the app, or right-click the tray icon
+- Optional delay between items (e.g. let RuneLite load before opening a wiki tab)
+- First run auto-detects common apps (Discord, Steam, RuneLite, OBS, Spotify, etc.) and scans your Steam library, so setup is mostly clicking chips
+
+## What it doesn't do (yet)
+
+- No "close everything" button
+- No global hotkeys
+- No cloud sync — everything's a local JSON file at `%APPDATA%/Sortie/loadouts.json`
+
+## Building from source
+
+```
+npm install
+npm run tauri build
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Requires Node.js, Rust, and the MSVC Build Tools (Windows C++ workload) — see [Tauri's prerequisites guide](https://v2.tauri.app/start/prerequisites/).
