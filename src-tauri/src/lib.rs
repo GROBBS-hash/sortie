@@ -2,9 +2,9 @@ mod detect;
 mod launch;
 mod steam;
 mod storage;
+mod tray;
 mod types;
 
-use tauri::menu::{Menu, MenuItem};
 use tauri::tray::TrayIconBuilder;
 use tauri::Manager;
 
@@ -12,12 +12,14 @@ use tauri::Manager;
 pub fn run() {
   tauri::Builder::default()
     .plugin(tauri_plugin_dialog::init())
+    .plugin(tauri_plugin_notification::init())
     .invoke_handler(tauri::generate_handler![
       storage::get_loadouts,
       storage::save_loadouts,
       launch::launch_loadout,
       detect::detect_installed_apps,
-      steam::list_steam_games
+      steam::list_steam_games,
+      tray::refresh_tray_menu
     ])
     .setup(|app| {
       if cfg!(debug_assertions) {
@@ -28,24 +30,14 @@ pub fn run() {
         )?;
       }
 
-      let open_item = MenuItem::with_id(app, "open", "Open", true, None::<&str>)?;
-      let quit_item = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
-      let tray_menu = Menu::with_items(app, &[&open_item, &quit_item])?;
+      let tray_menu = tray::build_menu(app.handle())?;
 
-      TrayIconBuilder::new()
+      let tray_icon = TrayIconBuilder::new()
         .icon(app.default_window_icon().unwrap().clone())
+        .tooltip("LoadOut")
         .menu(&tray_menu)
         .show_menu_on_left_click(false)
-        .on_menu_event(|app, event| match event.id.as_ref() {
-          "open" => {
-            if let Some(window) = app.get_webview_window("main") {
-              let _ = window.show();
-              let _ = window.set_focus();
-            }
-          }
-          "quit" => app.exit(0),
-          _ => {}
-        })
+        .on_menu_event(|app, event| tray::handle_menu_event(app, event.id.as_ref()))
         .on_tray_icon_event(|tray, event| {
           if let tauri::tray::TrayIconEvent::Click {
             button: tauri::tray::MouseButton::Left,
@@ -61,6 +53,8 @@ pub fn run() {
           }
         })
         .build(app)?;
+
+      app.manage(tray_icon);
 
       Ok(())
     })

@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
-import { getLoadouts, saveLoadouts } from './api'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { getLoadouts, saveLoadouts, refreshTrayMenu } from './api'
 import type { LoadoutsFile } from './types'
 import Home from './screens/Home'
 import Editor from './screens/Editor'
+import FirstRun from './screens/FirstRun'
+import Toasts, { type Toast } from './components/Toasts'
 
 type Screen = { name: 'home' } | { name: 'editor'; loadoutId: string }
 
@@ -10,6 +12,8 @@ function App() {
   const [data, setData] = useState<LoadoutsFile | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [screen, setScreen] = useState<Screen>({ name: 'home' })
+  const [skipFirstRun, setSkipFirstRun] = useState(false)
+  const [toasts, setToasts] = useState<Toast[]>([])
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -22,8 +26,22 @@ function App() {
     setData(next)
     if (saveTimer.current) clearTimeout(saveTimer.current)
     saveTimer.current = setTimeout(() => {
-      saveLoadouts(next).catch((e) => setError(String(e)))
+      saveLoadouts(next)
+        .then(refreshTrayMenu)
+        .catch((e) => setError(String(e)))
     }, 300)
+  }
+
+  const pushToast = (title: string, message: string) => {
+    const id = crypto.randomUUID()
+    setToasts((prev) => [...prev, { id, title, message }])
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id))
+    }, 6000)
+  }
+
+  const dismissToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id))
   }
 
   if (error) {
@@ -42,8 +60,10 @@ function App() {
     )
   }
 
+  let content: ReactNode
+
   if (screen.name === 'editor') {
-    return (
+    content = (
       <Editor
         data={data}
         loadoutId={screen.loadoutId}
@@ -51,9 +71,32 @@ function App() {
         onBack={() => setScreen({ name: 'home' })}
       />
     )
+  } else if (data.loadouts.length === 0 && !skipFirstRun) {
+    content = (
+      <FirstRun
+        data={data}
+        onChange={handleChange}
+        onEdit={(loadoutId) => setScreen({ name: 'editor', loadoutId })}
+        onSkip={() => setSkipFirstRun(true)}
+      />
+    )
+  } else {
+    content = (
+      <Home
+        data={data}
+        onChange={handleChange}
+        onEdit={(loadoutId) => setScreen({ name: 'editor', loadoutId })}
+        onToast={pushToast}
+      />
+    )
   }
 
-  return <Home data={data} onChange={handleChange} onEdit={(loadoutId) => setScreen({ name: 'editor', loadoutId })} />
+  return (
+    <>
+      {content}
+      <Toasts toasts={toasts} onDismiss={dismissToast} />
+    </>
+  )
 }
 
 export default App

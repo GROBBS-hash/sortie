@@ -6,6 +6,8 @@ export const getLoadouts = () => invoke<LoadoutsFile>('get_loadouts')
 
 export const saveLoadouts = (data: LoadoutsFile) => invoke<void>('save_loadouts', { data })
 
+export const refreshTrayMenu = () => invoke<void>('refresh_tray_menu')
+
 export const launchLoadout = (loadoutId: string) => invoke<void>('launch_loadout', { loadoutId })
 
 export const detectInstalledApps = () => invoke<DetectedApp[]>('detect_installed_apps')

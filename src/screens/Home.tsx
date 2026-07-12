@@ -16,6 +16,7 @@ interface HomeProps {
   data: LoadoutsFile
   onChange: (data: LoadoutsFile) => void
   onEdit: (loadoutId: string) => void
+  onToast: (title: string, message: string) => void
 }
 
 function newLoadout(): Loadout {
@@ -30,7 +31,7 @@ function newLoadout(): Loadout {
   }
 }
 
-export default function Home({ data, onChange, onEdit }: HomeProps) {
+export default function Home({ data, onChange, onEdit, onToast }: HomeProps) {
   const [launchStates, setLaunchStates] = useState<Record<string, LaunchRowState>>({})
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
 
@@ -61,6 +62,9 @@ export default function Home({ data, onChange, onEdit }: HomeProps) {
         }
         const isLast = p.index === p.total
         const failures = existing.failures + (p.status === 'ok' ? 0 : 1)
+        if (p.status !== 'ok' && p.message) {
+          onToast(p.label, p.message)
+        }
         if (isLast) {
           getLoadouts().then(onChange).catch(() => {})
         }
@@ -125,6 +129,10 @@ export default function Home({ data, onChange, onEdit }: HomeProps) {
       <h1 className="text-2xl font-semibold mb-6">
         Load<span className="text-violet-400">Out</span>
       </h1>
+
+      {data.loadouts.length === 0 && (
+        <p className="text-neutral-500 mb-4">No loadouts yet — create one to get started.</p>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.loadouts.map((loadout) => {

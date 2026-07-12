@@ -159,6 +159,12 @@ export default function ItemPicker({ onAdd, onClose }: ItemPickerProps) {
                   className="w-full bg-neutral-800 border border-neutral-700 rounded px-3 py-2"
                 />
               )}
+              {steamGames && steamGames.length === 0 && (
+                <p className="text-neutral-500 text-sm">No Steam games found in your library.</p>
+              )}
+              {steamGames && steamGames.length > 0 && filteredSteamGames.length === 0 && (
+                <p className="text-neutral-500 text-sm">No games match "{steamFilter}".</p>
+              )}
               <div className="space-y-1">
                 {filteredSteamGames.map((game) => (
                   <button

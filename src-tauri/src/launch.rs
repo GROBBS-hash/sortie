@@ -5,6 +5,7 @@ use std::process::Command;
 use std::thread;
 use std::time::Duration;
 use tauri::{AppHandle, Emitter};
+use tauri_plugin_notification::NotificationExt;
 
 #[derive(Clone, Serialize)]
 struct LaunchProgress {
@@ -87,6 +88,15 @@ pub fn launch_loadout(app: AppHandle, loadout_id: String) -> Result<(), String> 
             Ok(()) => ("ok".to_string(), None),
             Err(e) => ("missing".to_string(), Some(e)),
         };
+
+        if let Some(msg) = &message {
+            let _ = app
+                .notification()
+                .builder()
+                .title(format!("LoadOut — {label}"))
+                .body(msg)
+                .show();
+        }
 
         let _ = app.emit(
             "launch-progress",

@@ -1,4 +1,4 @@
-use crate::types::{Item, Loadout, LoadoutsFile, Settings};
+use crate::types::{LoadoutsFile, Settings};
 use std::fs;
 use std::path::PathBuf;
 use tauri::{AppHandle, Manager};
@@ -15,46 +15,11 @@ fn config_path(app: &AppHandle) -> Result<PathBuf, String> {
     Ok(config_dir(app)?.join("loadouts.json"))
 }
 
-fn seed_loadout() -> Loadout {
-    Loadout {
-        id: "seed-osrs-grind".into(),
-        name: "OSRS Grind".into(),
-        icon: "🗡️".into(),
-        created_at: "2026-07-12T00:00:00Z".into(),
-        last_launched_at: None,
-        launch_count: 0,
-        items: vec![
-            Item::App {
-                id: "seed-runelite".into(),
-                label: "RuneLite".into(),
-                path: r"C:\Users\X\AppData\Local\RuneLite\RuneLite.exe".into(),
-                args: "".into(),
-                delay_after_ms: 5000,
-                enabled: true,
-            },
-            Item::Steam {
-                id: "seed-lethal-company".into(),
-                label: "Lethal Company".into(),
-                steam_app_id: "1966720".into(),
-                delay_after_ms: 0,
-                enabled: true,
-            },
-            Item::Url {
-                id: "seed-osrs-wiki".into(),
-                label: "OSRS Wiki".into(),
-                url: "https://oldschool.runescape.wiki".into(),
-                delay_after_ms: 0,
-                enabled: true,
-            },
-        ],
-    }
-}
-
 fn default_file() -> LoadoutsFile {
     LoadoutsFile {
         version: 1,
         settings: Settings::default(),
-        loadouts: vec![seed_loadout()],
+        loadouts: vec![],
     }
 }
 
