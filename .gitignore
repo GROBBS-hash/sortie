@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 release/
+marketing/
 
 # Claude Code local settings
 .claude/settings.local.json
