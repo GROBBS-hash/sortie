@@ -1,3 +1,5 @@
+<img src="assets/logo.png" width="96" height="96" alt="Sortie logo">
+
 # Sortie
 
 One click launches your entire gaming session — apps, Steam games, and websites, in order. Lives in your system tray.
